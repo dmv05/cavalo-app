@@ -31,6 +31,7 @@ model Listing {
   height      Int?     // taille au garrot en cm
   discipline  String?  // CSO, Dressage, Loisir, Endurance, Western...
   color       String?  // robe
+  videoUrl    String?  // vidéo de présentation (1 obligatoire à la création)
   region      String   // région / département
   country     String   @default("France")
   // Statut

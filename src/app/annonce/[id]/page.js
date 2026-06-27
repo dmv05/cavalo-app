@@ -56,6 +56,18 @@ export default async function ListingPage({ params }) {
           </div>
         )}
 
+        {listing.videoUrl && (
+          <div style={{ marginTop: '1rem' }}>
+            <h3 style={{ color: 'var(--brown)', marginBottom: '0.5rem' }}>🎥 Vidéo</h3>
+            <video
+              src={listing.videoUrl}
+              controls
+              playsInline
+              style={{ width: '100%', borderRadius: 'var(--radius)', maxHeight: 360, background: '#000' }}
+            />
+          </div>
+        )}
+
         <h1 style={{ marginTop: '1rem', color: 'var(--brown)' }}>{listing.title}</h1>
         <div className="card-price" style={{ fontSize: '1.6rem', margin: '0.4rem 0' }}>
           {listing.price.toLocaleString('fr-FR')} €

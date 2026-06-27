@@ -38,7 +38,9 @@ export async function setAuthCookie(token) {
   const store = await cookies();
   store.set(COOKIE_NAME, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    // Secure activé seulement si COOKIE_SECURE=true (prod HTTPS).
+    // En démo HTTP, laisser false sinon le navigateur rejette le cookie.
+    secure: process.env.COOKIE_SECURE === 'true',
     sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 30, // 30 jours
     path: '/',

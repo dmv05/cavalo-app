@@ -42,6 +42,7 @@ Dans Coolify : + New → Database → PostgreSQL (v16 ou 17).
 | `JWT_SECRET` | générer : `openssl rand -hex 32` |
 | `NODE_ENV` | `production` |
 | `PORT` | `3000` |
+| `COOKIE_SECURE` | `true` (oblige le cookie d'auth en HTTPS — requis en prod) |
 
 ## Étape 4 — Volume persistant (photos des annonces)
 

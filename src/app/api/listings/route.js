@@ -33,10 +33,18 @@ export async function POST(req) {
 
   try {
     const body = await req.json();
-    const { title, description, price, breed, age, sex, height, discipline, color, region, country, photos } = body;
+    const { title, description, price, breed, age, sex, height, discipline, color, region, country, photos, videoUrl } = body;
 
     if (!title || !description || !price || !breed || !age || !sex || !region) {
       return NextResponse.json({ error: 'Champs requis manquants.' }, { status: 400 });
+    }
+
+    // Médias obligatoires : exactement 3 photos + 1 vidéo
+    if (!Array.isArray(photos) || photos.length !== 3) {
+      return NextResponse.json({ error: 'Il faut exactement 3 photos.' }, { status: 400 });
+    }
+    if (!videoUrl) {
+      return NextResponse.json({ error: 'Une vidéo est obligatoire.' }, { status: 400 });
     }
 
     const listing = await prisma.listing.create({
@@ -50,12 +58,11 @@ export async function POST(req) {
         height: height ? parseInt(height) : null,
         discipline: discipline || null,
         color: color || null,
+        videoUrl,
         region,
         country: country || 'France',
         sellerId: user.id,
-        photos: photos?.length
-          ? { create: photos.map((url, i) => ({ url, order: i })) }
-          : undefined,
+        photos: { create: photos.map((url, i) => ({ url, order: i })) },
       },
       include: { photos: true },
     });

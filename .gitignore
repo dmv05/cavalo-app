@@ -1,8 +1,11 @@
 node_modules/
 .next/
 .env
-.env.local
+.env.*
+!.env.example
 *.log
 public/uploads/
+uploads-data/
 prisma/dev.db
 .DS_Store
+scripts/setup-demo.sh
