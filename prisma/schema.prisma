@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String
+  name      String
+  phone     String?
+  region    String?
+  createdAt DateTime  @default(now())
+  listings  Listing[]
+  favorites Favorite[]
+}
+
+model Listing {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  price       Int      // en euros
+  // Caractéristiques du cheval
+  breed       String   // race
+  age         Int      // âge en années
+  sex         String   // Hongre / Jument / Étalon
+  height      Int?     // taille au garrot en cm
+  discipline  String?  // CSO, Dressage, Loisir, Endurance, Western...
+  color       String?  // robe
+  region      String   // région / département
+  country     String   @default("France")
+  // Statut
+  status      String   @default("active") // active, sold, paused
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  // Relations
+  sellerId    String
+  seller      User     @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  photos      Photo[]
+  favorites   Favorite[]
+
+  @@index([breed])
+  @@index([discipline])
+  @@index([region])
+  @@index([price])
+  @@index([status])
+}
+
+model Photo {
+  id        String  @id @default(cuid())
+  url       String
+  order     Int     @default(0)
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  listingId String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, listingId])
+}
