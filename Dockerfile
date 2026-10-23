@@ -1,5 +1,5 @@
 # ---- Étape 1 : dépendances + build ----
-FROM node:22-alpine AS builder
+FROM node:22.23.4-alpine AS builder
 WORKDIR /app
 
 # Outils requis par Prisma/sharp sur Alpine
@@ -15,7 +15,7 @@ ENV DATABASE_URL="postgresql://build:build@localhost:5432/build"
 RUN npm run build
 
 # ---- Étape 2 : image de production minimale ----
-FROM node:22-alpine AS runner
+FROM node:22.23.4-alpine AS runner
 WORKDIR /app
 RUN apk add --no-cache libc6-compat openssl
 
